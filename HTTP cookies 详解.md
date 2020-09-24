@@ -3,6 +3,9 @@
 ##### [1、cookie的起源](#anchor1)
 ##### [2、cookie是什么](#anchor2)
 ##### [3、创建cookie](#anchor3)
+##### [4、cookie 编码](#anchor4)
+
+
 
 ### <span id="anchor1">1、cookie的起源</span>
 早期Web应用的最大问题之一：**如何维持状态**，服务器无法判断两次请求是否来自同一浏览器
@@ -17,3 +20,37 @@
 * 大多数需要登陆的网址在**用户验证成功后都会设置一个cookie**，只要这个cookie存在并可以，用户就可以浏览这个网站的任意界面
 
 ### <span id="anchor3">3、创建cookie</span>
+Web服务器通过发送一个称为`Set-Cookie`的HTTP消息头来创建一个cookie，`Set-Cookie`消息头是一个字符串，格式如下（中括号的部分是可选的）
+```shell
+Set-Cookie: value[; expire=date][; domain=domain][; path=path][; secure]
+```
+* 消息头的第一部分，value，通常是一个`name=value`格式的字符串
+* 这种格式是原始规范中指定的格式，浏览器不会对cookie值按照此格式来验证
+* 这种格式最常用，大多数接口只支持该格式
+* 通过 Set-Cookie 指定的可选项只会在浏览器端使用，不会被发送至服务器端。
+* 发送至服务器的cookie值与通过`Set-Cookie`指定的值完全一样，不会有进一步的解析或转码操作。如果请求中包含多个 cookie，它们将会被分号和空格分开，例如：
+```shell
+Cookie: value1; value2; name1=value1
+```
+* 服务器端框架通常包含解析 cookie 的方法，通过编程的方式获取cookie的值。
+#### HTTP请求发送Cookies的条件：
+* 本地已经缓存有cookies
+* 根据请求的URL来匹配cookies的domain、path属性，如果都符合才会发送。
+  * 举个例子：访问www.baidu.com时，就不发送www.qq.com的cookies
+
+#### 示例
+##### 服务器端发送`Set-Cookie`到浏览器端（response）
+```shell
+Response sent 52 bytes of Cookie data:
+	Set-Cookie: GSPStateCount=1; path=/cwbase/web/session/; HttpOnly
+Response sent 1315 bytes of Cookie data:
+	Set-Cookie: GSPState0=U3lzT3JnQ29kZTowMSZBdXRoVG9rZW46c3JhUXBUenNzL1owTndvRllyY2llYW9QQm8rVzlhTzVjbkdnbGRYMWF0dWF5NW5EczJ6a3dpYlZ5TGFIVE9XVnpIcWI3V25DMVc0ZGhkZEZjNGpRbjgxcXNXU0JISTJvUTBucU0vNUk2TzhtMTFBeWplWE9idXhaandUOXNzTjBTaVh3RG5TeGxIUmNRVlM2UHI2bjI4QXNSY2N1TVp5bCZDbGllbnRJUDoxMC03Mi0xMzUtOTMmVXNlcklEOjJiNGQ3ODJiLTNhMmUtNDA4Yy1hNGRkLWUwMjY2ZWIyMDMzMSZVc2VyU2VjTGV2ZWxDb2RlOkNPTkZJREVOVElBTCZVc2VyU2VjTGV2ZWxJRDpDT05GSURFTlRJQUwmU2Vzc2lvbklkOmNiZTkyMGQ3LWQ3N2EtNDY1MS05ZWY3LWQ3NWMwZTUyMjNhOSZBcHBJbnN0YW5jZU5hbWU6TTg3MSZNYWluREJDb2RlOk04NzEmU3lzT3JnTmFtZTrljY7kuLDpm4blm6ImQ3VycmVudEFwcElEOkdTUCZVc2VyQXNzT2JqZWN0OjAmVXNlckNvZGU6d2FuZ21pbmd6aGVuJkNvZGU6R1NQJlVzZXJFbWFpbDomVXNlck5hbWU6546L5piO5oyvJlByb2Nlc3NJRDphMTlkNzM5Mi0xZjIyLTRlZDctOGM0NC1jMWViMWQ0YzU2NDkmVXNlclNlY0xldmVsTmFtZTrmnLrlr4YmSUQ6NzRmM2E0MTQtZDUzNy00YjFiLWEzOTUtNWIyYzg4ZmUyZjA4JkJpekRhdGU6MjAyMC0wOS0yNFQwMDowMDowMCswODowMCZGcmFtZVR5cGU6NSZDbGllbnRUb2tlbjoxMC03Mi0xMzUtOTMmTG9naW5EYXRlOjIwMjAtMDktMjRUMDg6MzM6MjErMDg6MDAmRnVuY0lEOiZIb3N0TmFtZTomVXNlclNlY0xldmVsOjMmU3lzT3JnSUQ6M2IyNTcxNzEtZDVkZi00MWU2LTk3MGMtNDRjZjgwZDFlNTY2Jkxhbmd1YWdlOnpoLUNOJkN1cnJlbnREYXRlOjIwMjAtMDktMjRUMDg6MzM6MjErMDg6MDAmQ3VycmVudERiVHlwZTpTUUxTZXJ2ZXImVmVyc2lvbjoyMmY1ZTE0Yy04ZTIwLTQyODAtYWRmZS0zNzY2YWU4MjE3ZmQmQXBwSW5zdGFuY2VJRDpNODcxJg==; path=/cwbase/web/session/; HttpOnly
+Response sent 36 bytes of Cookie data:
+	Set-Cookie: GSPWebThemeKey=gsp2019; path=/cwbase
+```
+##### 浏览器端发送`cookie`到服务器端（request）
+```shell
+Cookie: GSPStateCount=1; GSPState0=U3lzT3JnQ29kZTowMSZBdXRoVG9rZW46c3JhUXBUenNzL1owTndvRllyY2llYW9QQm8rVzlhTzVjbkdnbGRYMWF0dWF5NW5EczJ6a3dpYlZ5TGFIVE9XVnpIcWI3V25DMVc0ZGhkZEZjNGpRbjgxcXNXU0JISTJvUTBucU0vNUk2TzhtMTFBeWplWE9idXhaandUOXNzTjBTaVh3RG5TeGxIUmNRVlM2UHI2bjI4QXNSY2N1TVp5bCZDbGllbnRJUDoxMC03Mi0xMzUtOTMmVXNlcklEOjJiNGQ3ODJiLTNhMmUtNDA4Yy1hNGRkLWUwMjY2ZWIyMDMzMSZVc2VyU2VjTGV2ZWxDb2RlOkNPTkZJREVOVElBTCZVc2VyU2VjTGV2ZWxJRDpDT05GSURFTlRJQUwmU2Vzc2lvbklkOmNiZTkyMGQ3LWQ3N2EtNDY1MS05ZWY3LWQ3NWMwZTUyMjNhOSZBcHBJbnN0YW5jZU5hbWU6TTg3MSZNYWluREJDb2RlOk04NzEmU3lzT3JnTmFtZTrljY7kuLDpm4blm6ImQ3VycmVudEFwcElEOkdTUCZVc2VyQXNzT2JqZWN0OjAmVXNlckNvZGU6d2FuZ21pbmd6aGVuJkNvZGU6R1NQJlVzZXJFbWFpbDomVXNlck5hbWU6546L5piO5oyvJlByb2Nlc3NJRDphMTlkNzM5Mi0xZjIyLTRlZDctOGM0NC1jMWViMWQ0YzU2NDkmVXNlclNlY0xldmVsTmFtZTrmnLrlr4YmSUQ6NzRmM2E0MTQtZDUzNy00YjFiLWEzOTUtNWIyYzg4ZmUyZjA4JkJpekRhdGU6MjAyMC0wOS0yNFQwMDowMDowMCswODowMCZGcmFtZVR5cGU6NSZDbGllbnRUb2tlbjoxMC03Mi0xMzUtOTMmTG9naW5EYXRlOjIwMjAtMDktMjRUMDg6MzM6MjErMDg6MDAmRnVuY0lEOiZIb3N0TmFtZTomVXNlclNlY0xldmVsOjMmU3lzT3JnSUQ6M2IyNTcxNzEtZDVkZi00MWU2LTk3MGMtNDRjZjgwZDFlNTY2Jkxhbmd1YWdlOnpoLUNOJkN1cnJlbnREYXRlOjIwMjAtMDktMjRUMDg6MzM6MjErMDg6MDAmQ3VycmVudERiVHlwZTpTUUxTZXJ2ZXImVmVyc2lvbjoyMmY1ZTE0Yy04ZTIwLTQyODAtYWRmZS0zNzY2YWU4MjE3ZmQmQXBwSW5zdGFuY2VJRDpNODcxJg==; GSPWebLanguageKey=zh-CN; GSPWebThemeKey=gsp2019
+```
+
+### <span id="anchor4">4、cookie 编码</span>
