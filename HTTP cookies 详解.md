@@ -4,7 +4,7 @@
 ##### [2、cookie是什么](#anchor2)
 ##### [3、创建cookie](#anchor3)
 ##### [4、cookie 编码](#anchor4)
-
+##### [5、过期时间选项](#anchor5)
 
 
 ### <span id="anchor1">1、cookie的起源</span>
@@ -54,3 +54,9 @@ Cookie: GSPStateCount=1; GSPState0=U3lzT3JnQ29kZTowMSZBdXRoVG9rZW46c3JhUXBUenNzL
 ```
 
 ### <span id="anchor4">4、cookie 编码</span>
+* 普遍认为cookie的值必须经过URL编码，但实际是一个谬论
+* 原始规范中明确指出，只有3个字符必须进行编码：**分号、逗号和空格**
+* 实际上，几乎所有实现都对cookie的值进行了一系列的URL编码。
+  * 对应`name=value`格式，通常会对`name`和`value`的值进行编码，不处理等号=
+
+### <span id="anchor5">5、过期时间选项</span>
