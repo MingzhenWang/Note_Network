@@ -59,4 +59,18 @@ Cookie: GSPStateCount=1; GSPState0=U3lzT3JnQ29kZTowMSZBdXRoVG9rZW46c3JhUXBUenNzL
 * 实际上，几乎所有实现都对cookie的值进行了一系列的URL编码。
   * 对应`name=value`格式，通常会对`name`和`value`的值进行编码，不处理等号=
 
-### <span id="anchor5">5、过期时间选项</span>
+### <span id="anchor5">5、cookie可选项</span>
+
+紧跟 cookie 值后面的每个选项**都以分号和空格**分开，每个选择都指定了 cookie 在什么情况下应该被发送至服务器。
+
+#### <span id="anchor51">5.1 过期时间选项（expires）</span>
+* 指定了 cookie 何时不会再被发送至服务器，随后浏览器将删除该 cookie。
+* 该选项的值是一个 Wdy, DD-Mon-YYYY HH:MM:SS GMT 日期格式的值，例如：
+```shell
+Set-Cookie: name=Nicholas; expires=Sat, 02 May 2009 23:38:25 GMT
+```
+* 没有设置 expires 选项时，cookie 的生命周期仅限于当前会话中，关闭浏览器会结束此次会话，所以会话 cookie 仅存在于浏览器打开状态之下。
+* 当登录一个 Web 应用时经常会看到一个复选框，询问你是否记住登录信息：如果你勾选了复选框，那么一个 expires 选项会被附加到登录 cookie 中。
+* 如果 expires 设置了一个过去的时间点，那么这个 cookie 会被立即删掉
+
+#### <span id="anchor52">5.2 domain 选项</span>
