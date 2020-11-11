@@ -5,7 +5,7 @@
 ##### [2、cookie是什么](#anchor2)
 ##### [3、创建cookie](#anchor3)
 ##### [4、cookie 编码](#anchor4)
-##### [5、过期时间选项](#anchor5)
+##### [5、cookie选项](#anchor5)
 ###### &ensp;&ensp;[5.1 过期时间选项（expires）](#anchor51)
 ###### &ensp;&ensp;[5.2 domain 选项](#anchor52)
 ###### &ensp;&ensp;[5.3 path选项](#anchor53)
