@@ -6,6 +6,10 @@
 ##### [3、创建cookie](#anchor3)
 ##### [4、cookie 编码](#anchor4)
 ##### [5、过期时间选项](#anchor5)
+###### &ensp;&ensp;[5.1 过期时间选项（expires）](#anchor51)
+###### &ensp;&ensp;[5.2 domain 选项](#anchor52)
+###### &ensp;&ensp;[5.3 path选项](#anchor53)
+###### &ensp;&ensp;[5.4 secure选项](#anchor54)
 
 
 ### <span id="anchor1">1、cookie的起源</span>
@@ -75,3 +79,46 @@ Set-Cookie: name=Nicholas; expires=Sat, 02 May 2009 23:38:25 GMT
 * 如果 expires 设置了一个过去的时间点，那么这个 cookie 会被立即删掉
 
 #### <span id="anchor52">5.2 domain 选项</span>
+
+**指定了cookie将要被发送到哪个或哪些域中**
+
+**默认值**
+* domain会被设置为创建该cookie的页面所在域名
+
+**作用**
+* domain 选项可用来**扩充cookie可发送域的数量**，例如：
+```shell
+Set-Cookie: name=Nicholas; domain=nczonline.net
+```
+
+**例如**，Yahoo! 会有许多 name.yahoo.com 形式的站点（例如：my.yahoo.com, finance.yahoo.com 等等）。将一个 cookie 的 domain 选项设置为 yahoo.com，就可以将该 cookie 的值发送至所有这些站点。浏览器会把 domain 的值与请求的域名做一个**尾部比较**（即从字符串的尾部开始比较），并将匹配的 cookie 发送至服务器。
+
+* domain 选项的值必须是**发送 Set-Cookie 消息头的主机名的一部分**，例如我不能在 google.com 上设置一个 cookie，因为这会产生安全问题。
+* 不合法的 domain 选择将直接被忽略。
+
+#### <span id="anchor53">5.3 path选项</span>
+
+path选项指定了**请求的资源URL中必须存在指定的路径时，才会发送cookie消息头**
+**domain 选项核实完毕之后才会对 path 属性进行比较**
+
+通常是将path选项的值与请求的URL**从头开始逐字符比较**完成，如果字符匹配，则发送cookie消息头
+
+例如：
+```shell
+Set-Cookie: name=Nicholas; path=/blog
+```
+上述cookie中，path选项值会与 `/bolg`，`/blogrool`等等做匹配；任何以 `/bolg`开头的选项都是合法的
+
+**默认值**
+path 属性的默认值是发送 Set-Cookie 消息头所对应的 URL 中的 path 部分。
+
+#### <span id="anchor54">5.4 secure选项</span>
+最后一个选项是secure，该选项只是一个标记没有值
+
+* 只有当一个请求通过**SSL**或**HTTPS**创建时，包含secure选项的cookie才能被发送至服务器。
+* 这种cookie的内容价值很高，如果以纯文本的形式传递，很容易被篡改
+```shell
+Set-Cookie: name=Nicholas; secure
+```
+* 机密信息绝不应该在cookie中存储或传输，因为cookie的整个机制都是不安全的
+* 默认情况下，在 **HTTPS** 链接上传输的 cookie 都会被**自动添加上secure**选项
