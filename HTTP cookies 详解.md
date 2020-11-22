@@ -11,6 +11,8 @@
 ###### &ensp;&ensp;[5.3 path选项](#anchor53)
 ###### &ensp;&ensp;[5.4 secure选项](#anchor54)
 
+##### [6、Cookie 的维护和生命周期](#anchor6)
+
 
 ### <span id="anchor1">1、cookie的起源</span>
 早期Web应用的最大问题之一：**如何维持状态**，服务器无法判断两次请求是否来自同一浏览器
@@ -122,3 +124,103 @@ Set-Cookie: name=Nicholas; secure
 ```
 * 机密信息绝不应该在cookie中存储或传输，因为cookie的整个机制都是不安全的
 * 默认情况下，在 **HTTPS** 链接上传输的 cookie 都会被**自动添加上secure**选项
+
+### <span id="anchor6">6、Cookie 的维护和生命周期</span>
+
+* 在一个 cookie 中可以**指定任意数量的选项**，并且这些选项可以是**任意顺序**
+* **如何改变一个cookie 的值**
+  * 需要发送另一个具有相同 cookie name，domain，path 的 Set-Cookie 消息头
+  * 上述操作将覆盖原有cookie的值，但是修改cookie中任意一项都会创建一个新的cookie
+* **cookie排序**
+  * 按照 domain-path-secure 的顺序，设置越详细的 cookie 在字符串中越靠前
+
+例如，如下3个cookie设置值
+```shell
+Set-Cookie: name=Greg; domain=nczonline.net; path=/blog
+Set-Cookie: name=Nicholas; domain=nczonline.net; path=/
+Set-Cookie: name=Mike(在 ww.nczonline.net/blog 下用默认选项创建了另一个 cookie：)
+```
+如果你访问 www.nczonline.net/blog 下的一个页面，以下的消息头将被包含进来：
+```shell
+Cookie: name=Mike; name=Greg; name=Nicholas
+```
+
+**解释**：以 “Mike” 作为值的 cookie 使用了域名（www.nczonline.net）作为其 domain 值并且以全路径（/blog）作为其 path 值，则它较其它两个 cookie 更加详细。
+
+### <span id="anchor7">7、使用失效日期</span>
+
+* 当创建cookie时指定了失效日期，这个失效日期则关联了以`name-domain-path-secure`为标识的cookie
+* 要改变一个 cookie 的失效日期，你必须指定同样的组合（包含expire选项）
+* 如果不改变cookie的失效日期，一个会话cookie可以变成一个持久化cookie
+* 为了要将一个**持久化 cookie**变为一个**会话 cookie**，你必须删除这个持久化 cookie，这只要设置它的失效日期为过去某个时间之后再创建**一个同名的会话** cookie 就可以实现。
+
+**会话cookie和持久化cookie**
+1. 会话cookie
+	是一种临时的cookie，它记录了用户访问站点时的设置和偏好，关闭浏览器，会话cookie就被删除了
+
+2. 持久化cookie
+   存储在硬盘上，不同的操作系统，不同的浏览器存储的位置不一样，不管浏览器退出，或电脑重启，持久cookie都存在。持久cookie有过期时间。
+
+**注意：**
+**失效日期**是以**浏览器运行的电脑上的系统时间**为基准进行核实的。无法验证系统时间是否和服务器的时间同步，所以当服务器时间和浏览器所处系统时间存在差异时这样的设置会出现错误。
+
+### <span id="anchor8">8、cookie自动删除</span>
+
+cookie 会被浏览器自动删除，通常存在以下几种原因：
+1. **会话 cookie** (Session cookie) 在会话结束时（浏览器关闭）会被删除
+2. 持久化 cookie（Persistent cookie）在到达失效日期时会被删除
+3. 浏览器中的 cookie 数量达到限制，那么 cookie 会被删除以为新建的 cookie 创建空间
+
+
+### <span id="anchor9">9、cookie限制条件</span>
+cookie 存在许多限制条件，来阻止 cookie 滥用并保护浏览器和服务器免受一些负面影响
+有两种 cookie 限制条件：**cookie 的属性**和 **cookie的总大小**
+1. 原始规范中限定每个域名下不超过 20 个 cookie
+   1. IE7 中增加 cookie 的限制数量到 50 个
+   2. Opera 限定 cookie 数量为 30 个
+   3. Safari 和 Chrome 对与每个域名下的 cookie 个数没有限制。
+2. 发向服务器的所有 cookie 的最大数量(空间)
+   1. 仍旧维持原始规范中所指出的：4KB。所有超出该限制的 cookie 都会被截掉并且不会发送至服务器。
+
+
+### <span id="anchor10">10、Subcookies</span>
+
+有cookie的数量存在限制，开发者提出subcookies的观点来增加cookie的存储量。
+
+* subcookies是存储在一个cookie值中的一些name-value键值对
+  * 格式类似`name=a=b&c=d&e=f&g=h`
+* 这种方式允许在单个cookie中保存多个`name=value`对，而不会超出浏览器cookie数量的限制
+* 劣势：需要自定义解析方式来提取subcookies的值
+### <span id="anchor11">11、JavaScript 中的 cookie</span>
+
+在JavaScript中，可以通过document.cookie属性创建、维护和删除cookie
+
+**创建cookie**
+* 创建cookie时，该属性等同于`Set-cookie`消息头，需要使用和`Set-cookie`期望格式相同的字符串
+```shell
+doument.cookie="name=Nicholas;domain=nczonline.net;path=/";
+```
+
+**读取cookie**
+* 使用 document.cookie 中读取即可
+* 返回的字符串与 Cookie 消息头中的字符串格式相同，所以多个 cookie 会被分号和字符串分割，需要手工解析来读取数据
+
+
+* 通过访问 document.cookie 返回的 cookie 遵循发向服务器的 cookie 一样的访问规则。要通过 JavaScript 访问 cookie，该页面和 cookie 必须在相同的域中，有相同的 path，有相同的安全级别。
+
+**注意**：一旦 cookie 通过 **JavaScript设置后便不能提取它的选项**，所以你将不能知道 domain，path，expires 日期或 secure 标记。
+
+### <span id="anchor12">12、HTTP-Only cookies</span>
+
+**来源：** 微软的 IE6 SP1 在 cookie 中引入了一个新的选项：HTTP-only
+**含义：** 告知浏览器该cookie不能通过document.cookie属性访问
+**目的：** 提供一个安全措施，阻止通过JavaScript发起的跨站脚本（XXS）窃取cookie的行为
+**支持：**  Firefox2.0.0.5+、Opera9.5+、Chrome 都支持 HTTP-Only cookie，3.2 版本的 Safari 仍不支持
+**如何设置HTTP-only属性：**
+```shell
+Set-Cookie: name=Nicholas; HttpOnly
+```
+**其他安全问题**
+IE 同时更近一步并且不允许通过 XMLHttpRequest 的 getAllResponseHeaders() 或 getResponseHeader() 方法访问 cookie，然而其它浏览器则允许此行为。Firefox 在 3.0.6 中修复了该漏洞。
+
+注意：不能通过JavaScript设置HTTP-only
