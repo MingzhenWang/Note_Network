@@ -32,11 +32,11 @@
 
 ### <span id = "anchor22">2.2 通过请求和响应的交换达成通信</span>
 
-![](/网络/001-图解HTTP/Pictures/2201.png)
+![](/001-图解HTTP/Pictures/2201.png)
 
 具体示例如下所示：
 
-![](/网络/001-图解HTTP/Pictures/2202.png)
+![](/001-图解HTTP/Pictures/2202.png)
 
 下面是从客户端发送给某个HTTP服务器端的请求报文中的内容
 ```text
@@ -55,5 +55,5 @@ Host: hackr.jp
 **请求报文**
 请求报文是由请求方法、请求URI、协议版本、可选的请求首部字段和内容实体构成的
 请求报文的构成如下图所示
-![](/网络/001-图解HTTP/Pictures/2203.png)
+![](/001-图解HTTP/Pictures/2203.png)
 
