@@ -1,17 +1,34 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [<span id="anchor1">1、cookie的起源</span>](#span-idanchor11cookie%E7%9A%84%E8%B5%B7%E6%BA%90span)
+  - [cookie的诞生](#cookie%E7%9A%84%E8%AF%9E%E7%94%9F)
+- [<span id="anchor2">2、cookie是什么</span>](#span-idanchor22cookie%E6%98%AF%E4%BB%80%E4%B9%88span)
+- [<span id="anchor3">3、创建cookie</span>](#span-idanchor33%E5%88%9B%E5%BB%BAcookiespan)
+  - [HTTP请求发送Cookies的条件：](#http%E8%AF%B7%E6%B1%82%E5%8F%91%E9%80%81cookies%E7%9A%84%E6%9D%A1%E4%BB%B6)
+  - [示例](#%E7%A4%BA%E4%BE%8B)
+    - [服务器端发送`Set-Cookie`到浏览器端（response）](#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E5%8F%91%E9%80%81set-cookie%E5%88%B0%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AB%AFresponse)
+    - [浏览器端发送`cookie`到服务器端（request）](#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AB%AF%E5%8F%91%E9%80%81cookie%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AFrequest)
+- [<span id="anchor4">4、cookie 编码</span>](#span-idanchor44cookie-%E7%BC%96%E7%A0%81span)
+- [<span id="anchor5">5、cookie可选项</span>](#span-idanchor55cookie%E5%8F%AF%E9%80%89%E9%A1%B9span)
+  - [<span id="anchor51">5.1 过期时间选项（expires）</span>](#span-idanchor5151-%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4%E9%80%89%E9%A1%B9expiresspan)
+  - [<span id="anchor52">5.2 domain 选项</span>](#span-idanchor5252-domain-%E9%80%89%E9%A1%B9span)
+  - [<span id="anchor53">5.3 path选项</span>](#span-idanchor5353-path%E9%80%89%E9%A1%B9span)
+  - [<span id="anchor54">5.4 secure选项</span>](#span-idanchor5454-secure%E9%80%89%E9%A1%B9span)
+- [<span id="anchor6">6、Cookie 的维护和生命周期</span>](#span-idanchor66cookie-%E7%9A%84%E7%BB%B4%E6%8A%A4%E5%92%8C%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9Fspan)
+- [<span id="anchor7">7、使用失效日期</span>](#span-idanchor77%E4%BD%BF%E7%94%A8%E5%A4%B1%E6%95%88%E6%97%A5%E6%9C%9Fspan)
+- [<span id="anchor8">8、cookie自动删除</span>](#span-idanchor88cookie%E8%87%AA%E5%8A%A8%E5%88%A0%E9%99%A4span)
+- [<span id="anchor9">9、cookie限制条件</span>](#span-idanchor99cookie%E9%99%90%E5%88%B6%E6%9D%A1%E4%BB%B6span)
+- [<span id="anchor10">10、Subcookies</span>](#span-idanchor1010subcookiesspan)
+- [<span id="anchor11">11、JavaScript 中的 cookie</span>](#span-idanchor1111javascript-%E4%B8%AD%E7%9A%84-cookiespan)
+- [<span id="anchor12">12、HTTP-Only cookies</span>](#span-idanchor1212http-only-cookiesspan)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 网址：https://www.w3cschool.cn/pegosu/
 
-#### 目录
-##### [1、cookie的起源](#anchor1)
-##### [2、cookie是什么](#anchor2)
-##### [3、创建cookie](#anchor3)
-##### [4、cookie 编码](#anchor4)
-##### [5、cookie选项](#anchor5)
-###### &ensp;&ensp;[5.1 过期时间选项（expires）](#anchor51)
-###### &ensp;&ensp;[5.2 domain 选项](#anchor52)
-###### &ensp;&ensp;[5.3 path选项](#anchor53)
-###### &ensp;&ensp;[5.4 secure选项](#anchor54)
 
-##### [6、Cookie 的维护和生命周期](#anchor6)
 
 
 ### <span id="anchor1">1、cookie的起源</span>

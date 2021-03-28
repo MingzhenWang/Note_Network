@@ -1,29 +1,42 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [第1章 了解Web及网络基础](#%E7%AC%AC1%E7%AB%A0-%E4%BA%86%E8%A7%A3web%E5%8F%8A%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80)
+  - [<span id="anchor11">1.1 使用HTTP访问Web<span>](#span-idanchor1111-%E4%BD%BF%E7%94%A8http%E8%AE%BF%E9%97%AEwebspan)
+  - [<span id="anchor12">1.2 HTTP的诞生</span>](#span-idanchor1212-http%E7%9A%84%E8%AF%9E%E7%94%9Fspan)
+    - [<span id="anchor121">1.2.1 为知识共享而规划Web<span>](#span-idanchor121121-%E4%B8%BA%E7%9F%A5%E8%AF%86%E5%85%B1%E4%BA%AB%E8%80%8C%E8%A7%84%E5%88%92webspan)
+      - [现在已经提出了3项WWW构建技术](#%E7%8E%B0%E5%9C%A8%E5%B7%B2%E7%BB%8F%E6%8F%90%E5%87%BA%E4%BA%863%E9%A1%B9www%E6%9E%84%E5%BB%BA%E6%8A%80%E6%9C%AF)
+    - [<span id="anchor122">1.2.2 Web成长时代</span>](#span-idanchor122122-web%E6%88%90%E9%95%BF%E6%97%B6%E4%BB%A3span)
+    - [<span id="anchor123">1.2.3 驻足不前的HTTP</span>](#span-idanchor123123-%E9%A9%BB%E8%B6%B3%E4%B8%8D%E5%89%8D%E7%9A%84httpspan)
+      - [总结](#%E6%80%BB%E7%BB%93)
+  - [<span id="anchor13">1.3 网络基础TCP/IP</span>](#span-idanchor1313-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80tcpipspan)
+    - [<span id="anchor131">1.3.1 TCP/IP协议族</span>](#span-idanchor131131-tcpip%E5%8D%8F%E8%AE%AE%E6%97%8Fspan)
+      - [TCP/IP有几种不同的理解](#tcpip%E6%9C%89%E5%87%A0%E7%A7%8D%E4%B8%8D%E5%90%8C%E7%9A%84%E7%90%86%E8%A7%A3)
+    - [<span id="anchor132">1.3.2 TCP/IP的分层管理</span>](#span-idanchor132132-tcpip%E7%9A%84%E5%88%86%E5%B1%82%E7%AE%A1%E7%90%86span)
+      - [1. 层次化的优势](#1-%E5%B1%82%E6%AC%A1%E5%8C%96%E7%9A%84%E4%BC%98%E5%8A%BF)
+      - [2. 各层的作用](#2-%E5%90%84%E5%B1%82%E7%9A%84%E4%BD%9C%E7%94%A8)
+    - [<span id="anchor133">1.3.3 TCP/IP的通信传输流</span>](#span-idanchor133133-tcpip%E7%9A%84%E9%80%9A%E4%BF%A1%E4%BC%A0%E8%BE%93%E6%B5%81span)
+  - [<span id="anchor14">1.4 IP、TCP和DNS</span>](#span-idanchor1414-iptcp%E5%92%8Cdnsspan)
+    - [<span id="anchor141">1.4.1 负责传输的IP协议</span>](#span-idanchor141141-%E8%B4%9F%E8%B4%A3%E4%BC%A0%E8%BE%93%E7%9A%84ip%E5%8D%8F%E8%AE%AEspan)
+      - [（1）IP协议的作用：把各种数据包传送给对方](#1ip%E5%8D%8F%E8%AE%AE%E7%9A%84%E4%BD%9C%E7%94%A8%E6%8A%8A%E5%90%84%E7%A7%8D%E6%95%B0%E6%8D%AE%E5%8C%85%E4%BC%A0%E9%80%81%E7%BB%99%E5%AF%B9%E6%96%B9)
+      - [（2）使用ARP协议凭借MAC地址进行通信](#2%E4%BD%BF%E7%94%A8arp%E5%8D%8F%E8%AE%AE%E5%87%AD%E5%80%9Fmac%E5%9C%B0%E5%9D%80%E8%BF%9B%E8%A1%8C%E9%80%9A%E4%BF%A1)
+      - [（3）路由选择（routing）](#3%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9routing)
+    - [<span id="anchor142">1.4.2 确保可靠性的TCP协议</span>](#span-idanchor142142-%E7%A1%AE%E4%BF%9D%E5%8F%AF%E9%9D%A0%E6%80%A7%E7%9A%84tcp%E5%8D%8F%E8%AE%AEspan)
+      - [（1）字节流服务（Byte Stream Service）](#1%E5%AD%97%E8%8A%82%E6%B5%81%E6%9C%8D%E5%8A%A1byte-stream-service)
+      - [（2）确认数据最终是否送达到对方](#2%E7%A1%AE%E8%AE%A4%E6%95%B0%E6%8D%AE%E6%9C%80%E7%BB%88%E6%98%AF%E5%90%A6%E9%80%81%E8%BE%BE%E5%88%B0%E5%AF%B9%E6%96%B9)
+    - [<span id="anchor143">1.4.3 负责域名解析的DNS服务</span>](#span-idanchor143143-%E8%B4%9F%E8%B4%A3%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90%E7%9A%84dns%E6%9C%8D%E5%8A%A1span)
+  - [<span id="anchor15">1.5 各种协议与HTTP协议的关系</span>](#span-idanchor1515-%E5%90%84%E7%A7%8D%E5%8D%8F%E8%AE%AE%E4%B8%8Ehttp%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%85%B3%E7%B3%BBspan)
+  - [<span id="anchor16">1.6 URI和URL</span>](#span-idanchor1616-uri%E5%92%8Curlspan)
+    - [<span id="anchor161">1.6.1 统一资源标识符</span>](#span-idanchor161161-%E7%BB%9F%E4%B8%80%E8%B5%84%E6%BA%90%E6%A0%87%E8%AF%86%E7%AC%A6span)
+      - [（1）URI定义](#1uri%E5%AE%9A%E4%B9%89)
+      - [（2）协议方案](#2%E5%8D%8F%E8%AE%AE%E6%96%B9%E6%A1%88)
+      - [（3）URI和URL的区别、联系](#3uri%E5%92%8Curl%E7%9A%84%E5%8C%BA%E5%88%AB%E8%81%94%E7%B3%BB)
+    - [<span id="anchor162">1.6.1 URI格式</span>](#span-idanchor162161-uri%E6%A0%BC%E5%BC%8Fspan)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## 第1章 了解Web及网络基础
-
-#### 目录
-
-##### [1.1 使用HTTP访问Web](#anchor11)
-
-##### [1.2 HTTP的诞生](#anchor12)
-###### &ensp;&ensp;[1.2.1 为知识共享而规划Web](#anchor121)
-###### &ensp;&ensp;[1.2.2 Web成长时代](#anchor122)
-###### &ensp;&ensp;[1.2.3 驻足不前的HTTP](#anchor123)
-
-##### [1.3 网络基础TCP/IP](#anchor13)
-###### &ensp;&ensp;[1.3.1 TCP/IP协议族](#anchor131)
-###### &ensp;&ensp;[1.3.2 TCP/IP的分层管理](#anchor132)
-###### &ensp;&ensp;[1.3.3 TCP/IP的通信传输流](#anchor133)
-
-##### [1.4 IP、TCP和DNS](#anchor14)
-###### &ensp;&ensp;[1.4.1 负责传输的IP协议](#anchor141)
-###### &ensp;&ensp;[1.4.2 确保可靠性的TCP协议](#anchor142)
-###### &ensp;&ensp;[1.4.3 负责域名解析的DNS服务](#anchor143)
-
-##### [1.5 各种协议与HTTP协议的关系](#anchor15)
-
-##### [1.6 URI和URL](#anchor16)
-###### &ensp;&ensp;[1.6.1 统一资源标识符](#anchor161)
-###### &ensp;&ensp;[1.6.2 URI格式](#anchor162)
 
 
 ### <span id="anchor11">1.1 使用HTTP访问Web<span>
